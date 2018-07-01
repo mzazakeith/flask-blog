@@ -77,3 +77,7 @@ def new_post():
 
         return redirect(url_for('main.index'))
     return render_template('create_post.html', title='New Post', form=form, legend='New Post')
+@main.route("/comment/<int:comment_id>", methods=['GET', 'POST'])
+def comment(comment_id):
+    comment = Comments.query.get_or_404(comment_id)
+    return render_template('comment.html', title='Comment', comment=comment)
