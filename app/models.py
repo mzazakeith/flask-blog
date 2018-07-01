@@ -50,3 +50,11 @@ class Post(db.Model):
     def __repr__(self):
         return f"Post( '{self.title}', '{self.date_posted}')"
 
+
+class Subscription(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True, index=True, nullable=False)
+
+    def __repr__(self):
+        return f'{self.email}'
+
