@@ -25,3 +25,20 @@ def index():
         db.session.add(email)
         db.session.commit()
     return render_template('index.html', title=title, posts=posts, form=form)
+@main.route('/about')
+def about():
+    title = 'About Us'
+
+    return render_template('about.html', title=title)
+
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/profile/', picture_fn)
+    form_picture.save(picture_path)
+    current_user.image_file = picture_fn
+    image_file = url_for('static', filename='profile/' + current_user.image_file)
+
+
