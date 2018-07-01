@@ -79,6 +79,7 @@ def new_post():
         subs = Subscription.query.all()
         for sub in subs:
             mail_message("New ", "email/welcome_user", sub.email)
+            mail_message("New ", "email/new_post", sub.email)
 
         return redirect(url_for('main.index'))
     return render_template('create_post.html', title='New Post', form=form, legend='New Post')
