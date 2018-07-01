@@ -59,3 +59,21 @@ def profile():
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile/' + current_user.image_file)
     return render_template('profile/profile.html', title='Account', image_file=image_file, form=form)
+@main.route("/post/new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    if current_user.username != 'Keith Mzaza':
+        abort(403)
+
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data)
+        db.session.add(post)
+        db.session.commit()
+        subs = Subscription.query.all()
+        for sub in subs:
+            mail_message("New ", "email/welcome_user", sub.email)
+
+        return redirect(url_for('main.index'))
+    return render_template('create_post.html', title='New Post', form=form, legend='New Post')
