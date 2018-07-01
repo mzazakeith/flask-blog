@@ -8,3 +8,13 @@ from app.main.forms import UpdateAccountForm, PostForm, SubscribeForm, CommentFo
 from app.models import User, Post, Subscription, Comments
 from manage import app
 from . import main
+
+@main.route('/', methods=['GET', 'POST'])
+def index():
+    """
+    View root page function that returns the index page and its data
+    """
+
+    title = 'Home'
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=4)
