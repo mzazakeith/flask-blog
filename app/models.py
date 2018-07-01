@@ -36,3 +36,17 @@ class User(UserMixin, db.Model):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), unique=True, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    author = db.Column(db.String(15), nullable=False, default='Keith Mzaza')
+    comment = db.relationship('Comments', backref='post', lazy='dynamic')
+
+    def __repr__(self):
+        return f"Post( '{self.title}', '{self.date_posted}')"
+
