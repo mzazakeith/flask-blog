@@ -35,6 +35,17 @@ class PostForm(FlaskForm):
     content = TextAreaField('Content', validators=[Required()])
     submit = SubmitField('Post')
 
+
+class SubscribeForm(FlaskForm):
+    email = StringField('Email address', validators=[Required(), Email()])
+    submit = SubmitField('Subscribe')
+
+    def validate_email(self, email):
+        email = Subscription.query.filter_by(email=email.data).first()
+        if email:
+            raise ValidationError('That email is already subscribed to our emailing list.')
+
+
 class CommentForm(FlaskForm):
     comment = StringField('Comment: ', validators=[Required()])
     submit = SubmitField('Submit')
